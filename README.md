@@ -1,40 +1,40 @@
-# --- Script PowerShell untuk mengunduh cloudflared-windows-386.exe ---
+@echo off
+REM --- Script untuk mengunduh cloudflared-windows-386.exe ---
 
-# URL file yang akan diunduh
-$DOWNLOAD_URL = "https://github.com/cloudflare/cloudflared/releases/download/2025.7.0/cloudflared-windows-386.exe"
+REM URL file yang akan diunduh
+REM URL ini adalah untuk versi cloudflared 2025.7.0 khusus 386-bit Windows.
+SET "DOWNLOAD_URL=https://github.com/cloudflare/cloudflared/releases/download/2025.7.0/cloudflared-windows-386.exe"
 
-# Nama file output yang akan disimpan
-$OUTPUT_FILENAME = "cloudflared-windows-386.exe"
+REM Nama file yang akan disimpan di komputer kamu
+SET "OUTPUT_FILENAME=cloudflared-windows-386.exe"
 
-Write-Host "`nSedang mengunduh $($OUTPUT_FILENAME) dari:`n$($DOWNLOAD_URL)`n"
+echo.
+echo Sedang mengunduh "%OUTPUT_FILENAME%" dari:
+echo %DOWNLOAD_URL%
+echo.
 
-# Gunakan Invoke-WebRequest (alias 'curl' di PowerShell) untuk mengunduh file
-# -Uri: URL sumber
-# -OutFile: Path dan nama file tujuan
-# -UseBasicParsing: Direkomendasikan untuk Invoke-WebRequest agar lebih konsisten
-#                  dan menghindari error parser HTML pada beberapa kasus.
-try {
-    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $OUTPUT_FILENAME -UseBasicParsing -ErrorAction Stop
-    
-    # Pengecekan tambahan: pastikan file benar-benar ada setelah diunduh
-    if (Test-Path $OUTPUT_FILENAME) {
-        Write-Host "`n=========================================================================" -ForegroundColor Green
-        Write-Host "$($OUTPUT_FILENAME) BERHASIL diunduh!" -ForegroundColor Green
-        Write-Host "File tersimpan di: $(Get-Location)" -ForegroundColor Green
-        Write-Host "=========================================================================" -ForegroundColor Green
-    } else {
-        throw "File tidak ditemukan setelah proses unduh selesai."
-    }
+REM Menggunakan curl untuk mengunduh file
+REM -L : Penting! Ini mengikuti redirect. Link GitHub Releases seringkali adalah redirect.
+REM -O (huruf kapital O): Menyimpan file dengan nama yang sama seperti yang ada di URL remote.
+curl -L -O %DOWNLOAD_URL%
 
-} catch {
-    Write-Host "`n=========================================================================" -ForegroundColor Red
-    Write-Host "GAGAL mengunduh $($OUTPUT_FILENAME)." -ForegroundColor Red
-    Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
-    Write-Host "Pastikan: " -ForegroundColor Red
-    Write-Host "1. Ada koneksi internet." -ForegroundColor Red
-    Write-Host "2. URL unduhan ($($DOWNLOAD_URL)) masih valid dan tidak berubah." -ForegroundColor Red
-    Write-Host "=========================================================================" -ForegroundColor Red
-}
+REM --- Pengecekan Hasil Unduhan ---
+IF %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo =========================================================================
+    echo GAGAL mengunduh "%OUTPUT_FILENAME%".
+    echo Pesan error dari Curl mungkin terlihat di atas.
+    echo Pastikan:
+    echo 1. Ada koneksi internet.
+    echo 2. URL unduhan (%DOWNLOAD_URL%) masih valid dan tidak berubah.
+    echo =========================================================================
+) ELSE (
+    echo.
+    echo =========================================================================
+    echo "%OUTPUT_FILENAME%" BERHASIL diunduh!
+    echo File tersimpan di direktori saat ini: %CD%
+    echo =========================================================================
+)
 
-Write-Host "`nTekan Enter untuk melanjutkan..."
-$null = Read-Host
+echo.
+pause
