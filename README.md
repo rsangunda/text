@@ -6,7 +6,7 @@ REM URL ini adalah untuk versi cloudflared 2025.7.0 khusus 386-bit Windows.
 SET "DOWNLOAD_URL=https://github.com/cloudflare/cloudflared/releases/download/2025.7.0/cloudflared-windows-386.exe"
 
 REM Nama file yang akan disimpan di komputer kamu
-SET "OUTPUT_FILENAME=cloudflared-windows-386.exe"
+SET "OUTPUT_FILENAME=cloudflared.exe"
 
 echo.
 echo Sedang mengunduh "%OUTPUT_FILENAME%" dari:
