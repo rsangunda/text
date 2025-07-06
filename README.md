@@ -16,25 +16,6 @@ echo.
 REM Menggunakan curl untuk mengunduh file
 REM -L : Penting! Ini mengikuti redirect. Link GitHub Releases seringkali adalah redirect.
 REM -O (huruf kapital O): Menyimpan file dengan nama yang sama seperti yang ada di URL remote.
-curl -L -O %DOWNLOAD_URL%
+curl -L -o %OUTPUT_FILENAME% %DOWNLOAD_URL%
 
-REM --- Pengecekan Hasil Unduhan ---
-IF %ERRORLEVEL% NEQ 0 (
-    echo.
-    echo =========================================================================
-    echo GAGAL mengunduh "%OUTPUT_FILENAME%".
-    echo Pesan error dari Curl mungkin terlihat di atas.
-    echo Pastikan:
-    echo 1. Ada koneksi internet.
-    echo 2. URL unduhan (%DOWNLOAD_URL%) masih valid dan tidak berubah.
-    echo =========================================================================
-) ELSE (
-    echo.
-    echo =========================================================================
-    echo "%OUTPUT_FILENAME%" BERHASIL diunduh!
-    echo File tersimpan di direktori saat ini: %CD%
-    echo =========================================================================
-)
-
-echo.
 pause
